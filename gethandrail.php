@@ -50,9 +50,9 @@ FROM
    y,
    z
   FROM Handrails) as tmp
-WHERE distance < 50 AND distance != 0";
-/*ORDER BY distance ASC
-LIMIT 50*/
+WHERE distance < $r AND distance != 0
+ORDER BY distance ASC
+LIMIT 50";
 
 echo "<p>Handrail info:</p><table>
 <tr>

@@ -11,7 +11,7 @@
 <script>
 function updateResults(){
   var handrail = $("#hr_start").val();
-  var reach    = $("#reachVal").val();
+  var reach    = $("#reachSlider").slider("value");
   console.log( "HR:" + handrail + " Reach:" + reach );
   $.get(
     "gethandrail.php",
@@ -25,28 +25,7 @@ function updateResults(){
 $(document).ready(function(){
   $(".updater").change(updateResults);
 });
-/*
-function showUser(str) {
-    if (str == "") {
-        document.getElementById("results").innerHTML = "";
-        return;
-    } else { 
-        if (window.XMLHttpRequest) {
-            // code for IE7+, Firefox, Chrome, Opera, Safari
-            xmlhttp = new XMLHttpRequest();
-        } else {
-            // code for IE6, IE5
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        xmlhttp.onreadystatechange = function() {
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                document.getElementById("results").innerHTML = xmlhttp.responseText;
-            }
-        }
-        xmlhttp.open("GET","gethandrail.php?hr1="+str,true);
-        xmlhttp.send();
-    }
-}*/
+
 </script>
  </head>
  <body>
@@ -55,7 +34,7 @@ function showUser(str) {
   <div id="w">
     <div id="content">
       <div id="defaultval" class="updater">
-        Crewmember reach (inches): <span id="reachVal">40</span>
+        Crewmember reach (inches): <span id="reachVal"></span>
       </div>
       
       <div id="reachSlider"></div>
@@ -77,10 +56,6 @@ try {
 $smt = $db->prepare('select Name From Handrails');
 $smt->execute();
 $data = $smt->fetchAll();
-
-
-
-
 
 /* Close db connection */
 $db = null;
@@ -109,12 +84,19 @@ catch(PDOException $e)    {
 
 <script type="text/javascript">
 $(function(){
+  var startValue = 55;
   $('#reachSlider').slider({ 
-    max: 70,
+    max: 80,
     min: 30,
-    value: 50,
+    value: startValue,
+    create: function(e,ui) {
+      $('#reachVal').html(startValue);
+    },
     slide: function(e,ui) {
       $('#reachVal').html(ui.value);
+    },
+    change: function(e,ui) {
+      updateResults();
     }
   });
   
