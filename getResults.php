@@ -1,29 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-<style>/*
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-table, td, th {
-    border: 1px solid black;
-    padding: 5px;
-    margin: 5px;
-}
-
-th {text-align: left;}*/
-</style>
 </head>
 <body>
 
 <?php
 $hr1 = $_GET['hr1'];
+$hr2 = $_GET['hr2'];
 $r   = $_GET['r'];
 $xo  = 0;
 $yo  = 0;
 $zo  = 0;
+$x2  = 0;
+$y2  = 0;
+$z2  = 0;
 
 /*** mysql info ***/
 $hostname = '139.169.37.115';
@@ -34,13 +24,20 @@ $dbname   = 'Handrails';
 try {
     $con = new PDO("mysql:host=$hostname;dbname=$dbname", $username, $password);
 
-$hrInfo="SELECT * FROM Handrails WHERE Name = '".$hr1."'";
-foreach ($con->query($hrInfo) as $rw) {
+$hr1Info="SELECT * FROM Handrails WHERE Name = '".$hr1."'";
+foreach ($con->query($hr1Info) as $rw) {
     $xo = $rw['x'];
     $yo = $rw['y'];
     $zo = $rw['z'];
 }
+$hr2Info="SELECT * FROM Handrails WHERE Name = '".$hr2."'";
+foreach ($con->query($hr2Info) as $rw) {
+    $x2 = $rw['x'];
+    $y2 = $rw['y'];
+    $z2 = $rw['z'];
+}
 
+/* SQL query for HRs within reach */
 $nearbyHRs="SELECT *
 FROM
  (SELECT 
@@ -54,7 +51,10 @@ WHERE distance < $r AND distance != 0
 ORDER BY distance ASC
 LIMIT 50";
 
-echo "<p>Handrail info:</p><table>
+/* Origin Handrail Info */
+echo "
+<div class=\"halfCol\">
+<p>Origin handrail info:</p><table>
 <tr>
 <th>Name</th>
 <th>x</th>
@@ -62,7 +62,7 @@ echo "<p>Handrail info:</p><table>
 <th>z</th>
 </tr>";
 
-foreach ($con->query($hrInfo) as $row) {
+foreach ($con->query($hr1Info) as $row) {
     echo "<tr>";
     echo "<td>" . $row['Name'] . "</td>";
     echo "<td>" . $row['x'] . "</td>";
@@ -70,8 +70,29 @@ foreach ($con->query($hrInfo) as $row) {
     echo "<td>" . $row['z'] . "</td>";
     echo "</tr>";
 }
-echo "</table>";
+echo "</table></div><div class=\"halfCol\">"; /* Start of Destination HR Info to keep 50/50 on one line */
 
+/* Destination Handrail Info */
+echo "
+<p>Destination handrail info:</p><table>
+<tr>
+<th>Name</th>
+<th>x</th>
+<th>y</th>
+<th>z</th>
+</tr>";
+
+foreach ($con->query($hr2Info) as $row) {
+    echo "<tr>";
+    echo "<td>" . $row['Name'] . "</td>";
+    echo "<td>" . $row['x'] . "</td>";
+    echo "<td>" . $row['y'] . "</td>";
+    echo "<td>" . $row['z'] . "</td>";
+    echo "</tr>";
+}
+echo "</table></div>";
+
+/* Handrails Within Reach of Origin */
 echo "<p>Nearby handrails:</p><table>
 <tr>
 <th>Name</th>

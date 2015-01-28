@@ -10,12 +10,13 @@
 
 <script>
 function updateResults(){
-  var handrail = $("#hr_start").val();
-  var reach    = $("#reachSlider").slider("value");
-  console.log( "HR:" + handrail + " Reach:" + reach );
+  var handrail_start = $("#hr_start").val();
+  var handrail_end   = $("#hr_end").val();
+  var reach          = $("#reachSlider").slider("value");
+  /*console.log( "HR1:" + handrail_start + " HR2:" + handrail_end + " Reach:" + reach );*/
   $.get(
-    "gethandrail.php",
-    { hr1:handrail, r:reach},
+    "getResults.php",
+    { hr1:handrail_start, hr2:handrail_end, r:reach},
     function( response ){
       $("#responseWrapper").html( response );
     }
@@ -67,20 +68,22 @@ catch(PDOException $e)    {
 
 ?> 
 
-<form>
-<!--<select class="updater" name="hr_start" id="hr_start" onchange="showUser(this.value)">-->
+<form><div class="halfCol">
+Origin:
 <select class="updater" name="hr_start" id="hr_start">
 <?php foreach ($data as $row): ?>
     <option><?=$row["Name"]?></option>
 <?php endforeach ?>
-</select>
+</select></div><div class="halfCol">
+Destination:
+<select class="updater" name="hr_end" id="hr_end">
+<?php foreach ($data as $row): ?>
+    <option><?=$row["Name"]?></option>
+<?php endforeach ?>
+</select></div>
 </form>
 
 
-<br />
-<!--
-<div id="results" style="margin: 10px;"><b>Handrail info will be listed here...</b></div>
--->
 
 <script type="text/javascript">
 $(function(){
@@ -103,7 +106,7 @@ $(function(){
 });
 </script>
 
-<div id="responseWrapper">Response:<br /></div>
+<div id="responseWrapper"><br /></div>
 
  </body>
 </html>

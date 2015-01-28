@@ -1,4 +1,4 @@
-html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
   margin: 0;
   padding: 0;
   border: 0;
@@ -20,6 +20,7 @@ body {
   line-height: 1; 
   color: #525252;
   background: #ffffff;
+  margin: 10px;
 }
 
 br { display: block; line-height: 1.3em; } 
@@ -59,7 +60,7 @@ h2 { font-size: 2.6em; line-height: 1.6em; font-weight: normal; font-family: 'Ac
 #w { 
   display: block;
   width: 100%;
-  margin: 0 auto;
+  margin: 10px;
   background: #fff;
   margin-top: 40px;
   -webkit-border-radius: 4px;
@@ -74,3 +75,11 @@ h2 { font-size: 2.6em; line-height: 1.6em; font-weight: normal; font-family: 'Ac
 
 
 #defaultval, #rangedval { display: block; margin-bottom: 25px; }
+
+#responseWrapper {margin: 0px; }
+
+.halfCol {
+  display: inline-block;
+  width:   50%;
+}
+
