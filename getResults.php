@@ -5,15 +5,16 @@
 <body>
 
 <?php
-$hr1 = $_GET['hr1'];
-$hr2 = $_GET['hr2'];
-$r   = $_GET['r'];
-$xo  = 0;
-$yo  = 0;
-$zo  = 0;
-$x2  = 0;
-$y2  = 0;
-$z2  = 0;
+$hr1      = $_GET['hr1'];
+$hr2      = $_GET['hr2'];
+$r        = $_GET['r'];
+$xo       = 0;
+$yo       = 0;
+$zo       = 0;
+$x2       = 0;
+$y2       = 0;
+$z2       = 0;
+$distance = 0;
 
 /*** mysql info ***/
 $hostname = '139.169.37.115';
@@ -36,6 +37,7 @@ foreach ($con->query($hr2Info) as $rw) {
     $y2 = $rw['y'];
     $z2 = $rw['z'];
 }
+$distance = round(SQRT((POW(($xo - $x2), 2) + POW(($yo - $y2), 2) + POW(($zo - $z2), 2))),2);
 
 /* SQL query for HRs within reach */
 $nearbyHRs="SELECT *
@@ -80,6 +82,7 @@ echo "
 <th>x</th>
 <th>y</th>
 <th>z</th>
+<th>Distance</th>
 </tr>";
 
 foreach ($con->query($hr2Info) as $row) {
@@ -88,6 +91,7 @@ foreach ($con->query($hr2Info) as $row) {
     echo "<td>" . $row['x'] . "</td>";
     echo "<td>" . $row['y'] . "</td>";
     echo "<td>" . $row['z'] . "</td>";
+    echo "<td>" . $distance . "</td>";
     echo "</tr>";
 }
 echo "</table></div>";
@@ -105,7 +109,7 @@ echo "<p>Nearby handrails:</p><table>
 foreach ($con->query($nearbyHRs) as $row) {
     echo "<tr>";
     echo "<td>" . $row['Name'] . "</td>";
-    echo "<td>" . $row['distance'] . "</td>";
+    echo "<td>" . round($row['distance'],2) . "</td>";
     echo "<td>" . $row['x'] . "</td>";
     echo "<td>" . $row['y'] . "</td>";
     echo "<td>" . $row['z'] . "</td>";
