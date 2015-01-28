@@ -93,8 +93,7 @@ catch(PDOException $e)    {
 ?> 
 
 <form>
-<!--<select class="updater" name="hr_start" id="hr_start" onchange="showUser(this.value)">-->
-<select class="updater" name="hr_start" id="hr_start">
+<select class="updater" name="hr_start" id="hr_start" onchange="showUser(this.value)">
 <?php foreach ($data as $row): ?>
     <option><?=$row["Name"]?></option>
 <?php endforeach ?>
@@ -103,9 +102,8 @@ catch(PDOException $e)    {
 
 
 <br />
-<!--
 <div id="results" style="margin: 10px;"><b>Handrail info will be listed here...</b></div>
--->
+
 
 <script type="text/javascript">
 $(function(){

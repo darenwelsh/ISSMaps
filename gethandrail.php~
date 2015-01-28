@@ -20,10 +20,9 @@ th {text-align: left;}*/
 
 <?php
 $hr1 = $_GET['hr1'];
-$r   = $_GET['r'];
-$xo  = 0;
-$yo  = 0;
-$zo  = 0;
+$xo = 0;
+$yo = 0;
+$zo = 0;
 
 /*** mysql info ***/
 $hostname = '139.169.37.115';
