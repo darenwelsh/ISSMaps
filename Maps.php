@@ -41,18 +41,17 @@ $(document).ready(function(){
       <div id="reachSlider"></div>
 </div></div>
 
- <?php  
+<?php  
 
-/*** mysql info ***/
-$hostname = '139.169.37.115';
-$username = 'host';
-$password = 'password';
-$dbname   = 'Handrails';
-
+include "DBinfo.php";
 try {
     $db = new PDO("mysql:host=$hostname;dbname=$dbname", $username, $password);
     /*** echo a message saying we have connected ***/
     //echo 'Connected to database';
+}
+catch(PDOException $e)    {
+    echo $e->getMessage();
+}
 
 $smt = $db->prepare('select Name From Handrails');
 $smt->execute();
@@ -60,11 +59,6 @@ $data = $smt->fetchAll();
 
 /* Close db connection */
 $db = null;
-}
-
-catch(PDOException $e)    {
-    echo $e->getMessage();
-}
 
 ?> 
 

@@ -1,9 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-</head>
-<body>
-
 <?php
 $hr1      = $_GET['hr1'];
 $hr2      = $_GET['hr2'];
@@ -16,30 +10,51 @@ $y2       = 0;
 $z2       = 0;
 $distance = 0;
 
-/*** mysql info ***/
-$hostname = '139.169.37.115';
-$username = 'host';
-$password = 'password';
-$dbname   = 'Handrails';
-
+include "DBinfo.php";
 try {
     $con = new PDO("mysql:host=$hostname;dbname=$dbname", $username, $password);
+}
+catch(PDOException $e)    {
+    echo $e->getMessage();
+}
 
-$hr1Info="SELECT * FROM Handrails WHERE Name = '".$hr1."'";
-foreach ($con->query($hr1Info) as $rw) {
+$sqlHRInfo = 'SELECT * FROM Handrails WHERE Name = :hr';
+$smt = $con->prepare($sqlHRInfo);
+$smt->execute(array(':hr' => $hr1));
+$hr1Info = $smt->fetchAll();
+foreach ($hr1Info as $rw) {
     $xo = $rw['x'];
     $yo = $rw['y'];
     $zo = $rw['z'];
 }
-$hr2Info="SELECT * FROM Handrails WHERE Name = '".$hr2."'";
-foreach ($con->query($hr2Info) as $rw) {
+$smt->execute(array(':hr' => $hr2));
+$hr2Info = $smt->fetchAll();
+
+foreach ($hr2Info as $rw) {
     $x2 = $rw['x'];
     $y2 = $rw['y'];
     $z2 = $rw['z'];
 }
+
 $distance = round(SQRT((POW(($xo - $x2), 2) + POW(($yo - $y2), 2) + POW(($zo - $z2), 2))),2);
 
 /* SQL query for HRs within reach */
+/*
+$sqlHRsInReach = 'SELECT *
+FROM
+ (SELECT 
+   Name,
+   SQRT((POW((:xo - :x), 2) + POW((:yo - :y), 2) + POW((:zo - :z), 2))) AS distance,
+   x,
+   y,
+   z
+  FROM Handrails) as tmp
+WHERE distance < $r AND distance != 0
+ORDER BY distance ASC
+LIMIT 50';
+$smt = $con->prepare($sqlHRsInReach);
+$smt->execute(array(':hr' => $hr1));
+$hr1Info = $smt->fetchAll();*/
 $nearbyHRs="SELECT *
 FROM
  (SELECT 
@@ -64,7 +79,7 @@ echo "
 <th>z</th>
 </tr>";
 
-foreach ($con->query($hr1Info) as $row) {
+foreach ($hr1Info as $row) {
     echo "<tr>";
     echo "<td>" . $row['Name'] . "</td>";
     echo "<td>" . $row['x'] . "</td>";
@@ -85,7 +100,7 @@ echo "
 <th>Distance</th>
 </tr>";
 
-foreach ($con->query($hr2Info) as $row) {
+foreach ($hr2Info as $row) {
     echo "<tr>";
     echo "<td>" . $row['Name'] . "</td>";
     echo "<td>" . $row['x'] . "</td>";
@@ -118,48 +133,29 @@ foreach ($con->query($nearbyHRs) as $row) {
 echo "</table>";
 
 
-/* function Dijkstra(Graph, source):
 
-      dist[source] ← 0                       // Distance from source to source
-      prev[source] ← undefined               // Previous node in optimal path initialization
 
-      for each vertex v in Graph:  // Initialization
-          if v ≠ source            // Where v has not yet been removed from Q (unvisited nodes)
-              dist[v] ← infinity             // Unknown distance function from source to v
-              prev[v] ← undefined            // Previous node in optimal path from source
-          end if 
-          add v to Q                     // All nodes initially in Q (unvisited nodes)
-      end for
-      
-      while Q is not empty:
-          u ← vertex in Q with min dist[u]  // Source node in first case
-          remove u from Q 
-          
-          for each neighbor v of u:           // where v has not yet been removed from Q.
-              alt ← dist[u] + length(u, v)
-              if alt < dist[v]:               // A shorter path to v has been found
-                  dist[v] ← alt 
-                  prev[v] ← u 
-              end if
-          end for
-      end while
-
-      return dist[], prev[]
-
-  end function
-
-*/
+// $points is an array in the following format: (HR1,HR2,distance-between-them)
+$points = array(
+	array(0,1,4),
+	array(0,2,I),
+	array(1,2,5),
+ 	array(1,3,5),
+	array(2,3,5),
+	array(3,4,5),
+	array(4,5,5),
+	array(4,5,5),
+	array(2,10,30),
+	array(2,11,40),
+	array(5,19,20),
+	array(10,11,20),
+	array(12,13,20),
+);
+ 
+$ourMap = array();
 
 
 
 /* Close db connection */
 $db = null;
-}
 
-catch(PDOException $e)    {
-    echo $e->getMessage();
-}
-
-?>
-</body>
-</html>
