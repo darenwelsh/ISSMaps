@@ -79,8 +79,8 @@ class Dijkstra {
 
 		foreach($map as $row=>$rw) {
  			foreach($rw as $k=>$v) {
-				$foo.= "[" . $row . "," . $k . "]" . $v;
-				//$foo.= sprintf($placeholder, isset($row['HR1']['HR2']) ? $row : -> infiniteDistance);
+				$foo.= "[" . $row . "," . $k . "]";
+				$foo.= sprintf($placeholder, isset($v) ? $v : $this -> infiniteDistance);
 				$foo.= "\n";
 			}
 		}
