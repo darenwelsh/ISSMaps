@@ -18,6 +18,7 @@ class Dijkstra {
 		$this -> bestPath = 0;
 	}
  
+/*
 	function findShortestPath($start,$to = null) {
 		$this -> startnode = $start;
 		for ($i=0;$i<$this -> numberOfNodes;$i++) {
@@ -70,21 +71,32 @@ class Dijkstra {
 			}
 		}
 	}
+*/ 
 
 	function printMap(&$map) {
 		$placeholder = ' %' . strlen($this -> infiniteDistance) .'d';
 		$foo = '';
 
+		foreach($map as $row=>$rw) {
+ 			foreach($rw as $k=>$v) {
+				$foo.= "[" . $row . "," . $k . "]" . $v;
+				//$foo.= sprintf($placeholder, isset($row['HR1']['HR2']) ? $row : -> infiniteDistance);
+				$foo.= "\n";
+			}
+		}
+
+/*
 		for($i=0,$im=count($map);$i<$im;$i++) {
 			for ($k=0,$m=$im;$k<$m;$k++) {
-				$foo.= "[" . $i . "," . $k . "]"; /*Debug*/ 
+				$foo.= "[" . $map[$i] . "," . $k . "]"; /*Debug*/ /*
 				$foo.= sprintf($placeholder, isset($map[$i][$k]) ? $map[$i][$k] : $this -> infiniteDistance);
 			}
 			$foo.= "\n";
-		}
+		}*/
 		return $foo;
 	}
  
+/*
 	function getResults($to = null) {
 		$ourShortestPath = array();
 		$foo = '';
@@ -119,6 +131,6 @@ class Dijkstra {
 		}
 		return $foo;
 	}
-
+*/
 } // end class 
 ?>
