@@ -1,8 +1,8 @@
 <?php
 /* VARIABLE DEFINITION */
-$hr1      = $_GET['hr1'];
-$hr2      = $_GET['hr2'];
-$r        = $_GET['r'];
+//$hr1      = $_GET['hr1'];
+//$hr2      = $_GET['hr2'];
+//$r        = $_GET['r'];
 $xo       = 0;
 $yo       = 0;
 $zo       = 0;
@@ -10,6 +10,12 @@ $x2       = 0;
 $y2       = 0;
 $z2       = 0;
 $distance = 0;
+$edges    = array();
+$csv      = "";
+
+$file = 'HRdistances.txt';
+
+
 
 /* DB CONNECTION */
 include "DBinfo.php";
@@ -48,15 +54,70 @@ foreach ($HRArray as $row1) {
   $tmpy2 = $row2['y'];
   $tmpz2 = $row2['z'];
   $tmpDistance = SQRT((POW(($tmpx1 - $tmpx2), 2) + POW(($tmpy1 - $tmpy2), 2) + POW(($tmpz1 - $tmpz2), 2)));
-  //$edges[] = array($tmpName1, $tmpName2, $tmpDistance);
-
-
+  if ( $tmpDistance > 100 ) { continue; }
+  if ( $tmpDistance == 0 ) { continue; }
+  //$edges[] = array('HR1'=>$tmpName1, 'HR2'=>$tmpName2, 'Distance'=>$tmpDistance);
+  $csv .= $tmpName1 . "," . $tmpName2 . "," . $tmpDistance . "\n";
+//echo $csv;
+//echo $tmpDistance;
+//var_dump($edges);
  }
 }
 
+/*
+foreach($edges as $row) {
+    $csv .= implode( ',' , $row ) . "\n";
+}*/
+//echo $csv;
+
+// Write the contents back to the file
+file_put_contents($file, $csv);
 
 
+/* 
+$sqlHRList = '
+SELECT Name
+FROM Handrails
+ORDER BY Name
+';
+$smt = $con->prepare($sqlHRList);
+$smt->execute();
+$HRList = $smt->fetchAll();
+foreach ($HRList as $row2) {
+ $handrails[] = array(
+  $tmpName2 = $row2['Name'];
+  $tmpx2 = $row2['x'];
+  $tmpy2 = $row2['y'];
+  $tmpz2 = $row2['z'];
+  $tmpDistance = SQRT((POW(($tmpx1 - $tmpx2), 2) + POW(($tmpy1 - $tmpy2), 2) + POW(($tmpz1 - $tmpz2), 2)));
+  $edges[] = array($tmpName1, $tmpName2, $tmpDistance);
+}
+*/
 
+
+/*
+$levels = array('low', 'medium', 'high');
+$attributes = array('fat', 'quantity', 'ratio', 'label');
+
+foreach ($levels as $key => $level):
+       foreach ($attributes as $k =>$attribute):
+             $variables[$level][] = $attribute . '_' . $level; // changed $variables[] to $variables[$level][]
+       endforeach;
+endforeach;
+*/
+
+/*
+$fp = fopen('file.csv', 'w');
+
+foreach ($edges as $fields) {
+    fputcsv($fp, $fields);
+}
+
+fclose($fp);
+*/
+
+
+/*
 $num = 0;
 $sql = "SELECT id, name, description FROM products";
 if($result = $mysqli->query($sql)) {
@@ -67,15 +128,17 @@ if($result = $mysqli->query($sql)) {
          $num++;        
     }
  }
+*/
+/*
 $output = fopen("php://output",'w') or die("Can't open php://output");
 header("Content-Type:application/csv"); 
-header("Content-Disposition:attachment;filename=pressurecsv.csv"); 
-fputcsv($output, array('id','name','description'));
-foreach($prod as $product) {
+header("Content-Disposition:attachment;filename=HRcsv.csv"); 
+fputcsv($output, array('HR1','HR2','distance'));
+foreach($edges as $product) {
     fputcsv($output, $product);
 }
 fclose($output) or die("Can't close php://output");
-
+*/
 
 /* Close db connection */
 $db = null;

@@ -137,7 +137,7 @@ echo "</table>";
 
 
 /* GENERATE ARRAY OF EDGES (PATHS BETWEEN HANDRAILS) */
-/*
+
 $sqlHRArray = '
 SELECT
  Name,
@@ -162,14 +162,16 @@ foreach ($HRArray as $row1) {
   $tmpy2 = $row2['y'];
   $tmpz2 = $row2['z'];
   $tmpDistance = SQRT((POW(($tmpx1 - $tmpx2), 2) + POW(($tmpy1 - $tmpy2), 2) + POW(($tmpz1 - $tmpz2), 2)));
-  //$edges[] = array($tmpName1, $tmpName2, $tmpDistance);
-
-var_dump($tmpDistance);
+  $edges[] = array('HR1' => $tmpName1, 'HR2' => $tmpName2, 'Distance' => $tmpDistance);
  }
 }
-//var_dump($edges);
-*/
+var_dump($edges);
+
+
+
 // $points is an array in the following format: (HR1,HR2,distance-between-them)
+
+/*
 $points = array(
 	array(0,1,4),
 	array(0,2,I),
@@ -187,6 +189,7 @@ $points = array(
 );
  
 $ourMap = array();
+*/
 
 
 
