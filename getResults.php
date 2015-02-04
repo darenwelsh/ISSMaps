@@ -137,7 +137,7 @@ echo "</table>";
 
 
 /* GENERATE ARRAY OF EDGES (PATHS BETWEEN HANDRAILS) */
-
+/*
 $sqlHRArray = '
 SELECT
  Name,
@@ -166,7 +166,7 @@ foreach ($HRArray as $row1) {
  }
 }
 var_dump($edges);
-
+*/
 
 
 // $points is an array in the following format: (HR1,HR2,distance-between-them)
